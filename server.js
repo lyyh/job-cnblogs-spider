@@ -164,7 +164,7 @@ var onRequest = function(req,res){
  			res.write('<li>工资范围比重:<ol>' + salaryScale + '</ol></li>')
 
 			res.write('</ol>')
-			res.write('<hr><p style="text-align:center">爬取网站:http://job.cnblogs.com/</p>')
+			res.end('<hr><p style="text-align:center">爬取网站:http://job.cnblogs.com/</p>')
 		})
 	})
 }
