@@ -34,5 +34,5 @@ let cheerio = require('cheerio');
 	// if((year = a.match(/\d/g)[0]))console.log(1)
 	// 	else console.log(2)
 
-	let a = 2.223;
-	console.log(parseFloat(a).toFixed(1))
+var date = new Date();
+console.log(date.toLocaleString())
