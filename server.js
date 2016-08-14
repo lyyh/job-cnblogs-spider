@@ -9,7 +9,7 @@ var http = require('http'),
 
 var ep = new Eventproxy(), //eventproxy实例
 	indexUrl = 'http://job.cnblogs.com', //首页地址
-	pageNum = 2, //爬取的页数
+	pageNum = 17, //爬取的页数
  	port = 3333; //端口号
 
 var onRequest = function(req,res){
