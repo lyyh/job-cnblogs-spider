@@ -1,11 +1,11 @@
-let http = require('http'),
+var http = require('http'),
 	url = require('url'),
 	cheerio = require('cheerio'),
 	superagent = require('superagent');
 
 //招聘信息收集
-exports.employInfo = ($,infoArray) => {
-	let companyName = '', //公司名称
+exports.employInfo = function($,infoArray){
+	var companyName = '', //公司名称
 		address = '', //工作地点
 		timeLimit = '', //工作期限
 		position = '', //招聘职位
@@ -38,12 +38,12 @@ exports.employInfo = ($,infoArray) => {
 	salaryRange = $('.offer_detail li').eq(4).text().split('：')[1]
 
 	//平均工资
-	let salary = $('.offer_detail li').eq(4).text();
-	let salaryArr = salary.match(/\d+/g);
+	var salary = $('.offer_detail li').eq(4).text();
+	var salaryArr = salary.match(/\d+/g);
 	
 	if(salaryArr){ //工资给出详细范围
-		let minSalary = parseInt(salaryArr[0]); 
-		let maxSalary = parseInt(salaryArr[1]);
+		var minSalary = parseInt(salaryArr[0]); 
+		var maxSalary = parseInt(salaryArr[1]);
 		aveSalary = parseInt((maxSalary + minSalary) / 2);
 		//过滤不合理的平均工资
 		aveSalary = aveSalary < 100 || aveSalary > 100000?0:aveSalary; 

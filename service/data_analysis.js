@@ -1,5 +1,5 @@
 //岗位
-const pos = {
+var pos = {
 	'.NET程序员': {
 		num: 0, //招聘信息数量
 		peopleNum: 0, //招聘人数
@@ -129,7 +129,7 @@ const pos = {
 }
 
 
-const data = {
+var data = {
 	position: pos, //岗位信息
 	allAveSalary: 0, //所有岗位平均工资
 	posScale: { //招聘岗位比例
@@ -171,8 +171,8 @@ const data = {
 
 //结果分析 json对象
 //总平均工资,各个岗位平均工资,招聘职位比重，学历要求比重，工作年限比重,工资范围比重
-exports.DATA_analysis = dataArray => {
-	let len = dataArray.length, //招聘信息数量
+exports.DATA_analysis = function(dataArray){
+	var len = dataArray.length, //招聘信息数量
 		allSalary = 0, //总工资
 		allAveSalary = 0, //总平均工资
 		salaryNum = 0, //平均工资数量
@@ -190,7 +190,7 @@ exports.DATA_analysis = dataArray => {
 		medScale = 0, //10k~20k
 		highScale = 0; //20K以上
 
-	dataArray.forEach(employInfo => {
+	dataArray.forEach(function(employInfo){
 		//各个岗位招聘信息数量
 		pos[employInfo.position].num++;
 
@@ -212,13 +212,13 @@ exports.DATA_analysis = dataArray => {
 		eachSalary[employInfo.position] += employInfo.aveSalary;
 
 		//学历要求
-		let degree = employInfo.degree;
+		var degree = employInfo.degree;
 		if(degree == '本科')college++;
 		else if(degree == '大专')colleges++;
 		else if(degree == '无学历要求')unlimited++;
 
 		//开发经验年限
-		let year = /\d/g.test(employInfo.timeLimit)?
+		var year = /\d/g.test(employInfo.timeLimit)?
 		parseInt(employInfo.timeLimit.match(/\d/g)[0]):'无要求';
 
 		if(year < 2)shorLimit++;
@@ -227,7 +227,7 @@ exports.DATA_analysis = dataArray => {
 		else if(year == '无要求')timeUnlimit++;
 
 		//工资范围
-		let salary = /\d/g.test(employInfo.salaryRange)?
+		var salary = /\d/g.test(employInfo.salaryRange)?
 		parseInt(employInfo.salaryRange.split('～')[1]):'面议'
 
 		if(salary <= 10000)lowScale++;
@@ -259,11 +259,11 @@ exports.DATA_analysis = dataArray => {
 	return data;
 }
 //各个岗位平均招聘人数
-const POS_avePeoNum = () => {
-	for(let posName in pos){
-		let tmp = pos[posName].num - pos[posName].someNum;
+var POS_avePeoNum = function(){
+	for(var posName in pos){
+		var tmp = pos[posName].num - pos[posName].someNum;
 
-		let avePeopleNum = 0;
+		var avePeopleNum = 0;
 		if(tmp)avePeopleNum = parseInt(pos[posName].peopleNum / tmp);
 		else avePeopleNum =0;
 
@@ -272,13 +272,13 @@ const POS_avePeoNum = () => {
 }
 
 //总平均工资
-const ALL_aveSalary = (allSalary,salaryNum) => {
+var ALL_aveSalary = function(allSalary,salaryNum){
 	return parseInt(allSalary / salaryNum);
 }
 
 //总结各个岗位平均工资
-const POS_aveSalary = eachSalary => {
-	for(let posName in eachSalary){
+var POS_aveSalary = function(eachSalary){
+	for(var posName in eachSalary){
 		if(!pos[posName].salaryNum){
 			pos[posName].aveSalary =0;
 			continue;
@@ -288,26 +288,26 @@ const POS_aveSalary = eachSalary => {
 }
 
 //招聘岗位比例
-const POS_scale = () => {
-	let sum = 0;
-	for(let posName in pos){
+var POS_scale = function(){
+	var sum = 0;
+	for(var posName in pos){
 		sum += pos[posName].peopleNum;
 	}
 	//计算岗位比例
-	for(let posName in pos){
+	for(var posName in pos){
 		data.posScale[posName] = Number(parseFloat(pos[posName].peopleNum / sum).toFixed(3));
 	}
 }
 
 //学历要求比例
-const DEG_scale = (len,college,colleges,unlimited) => {
+var DEG_scale = function(len,college,colleges,unlimited){
 	data.degScale['本科'] = Number(parseFloat(college / len).toFixed(3));
 	data.degScale['大专'] = Number(parseFloat(colleges / len).toFixed(3));
 	data.degScale['无学历要求'] = Number(parseFloat(unlimited / len).toFixed(3));
 }
 
 //工作期限范围
-const TIMLIMIT_scale = (len,shorLimit,commonLimit,longLimit,timeUnlimit) => {
+var TIMLIMIT_scale = function(len,shorLimit,commonLimit,longLimit,timeUnlimit){
 	data.timelimit['2年以下'] = Number(parseFloat(shorLimit / len).toFixed(3));
 	data.timelimit['2年~5年'] = Number(parseFloat(commonLimit / len).toFixed(3));
 	data.timelimit['5年以上'] = Number(parseFloat(longLimit / len).toFixed(3));
@@ -315,7 +315,7 @@ const TIMLIMIT_scale = (len,shorLimit,commonLimit,longLimit,timeUnlimit) => {
 }
 
 //工资范围比重
-const SALARY_scale = (lowScale,medScale,highScale) => {
+var SALARY_scale = function(lowScale,medScale,highScale){
 	len = lowScale + medScale + highScale;
 	data.salaryScale['10k以下'] = Number(parseFloat(lowScale / len).toFixed(3));
 	data.salaryScale['10k~20k'] = Number(parseFloat(medScale / len).toFixed(3));
