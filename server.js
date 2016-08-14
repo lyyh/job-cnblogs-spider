@@ -9,20 +9,29 @@ var http = require('http'),
 
 var ep = new Eventproxy(), //eventproxy实例
 	indexUrl = 'http://job.cnblogs.com', //首页地址
-	pageUrls = [], //招聘列表地址
-	employUrls = [], //招聘信息地址
-	employInfos = [], //招聘内容（招聘职位、学历要求，发布日期，截止日期，工资范围）
-	pageNum = 17, //爬取的页数
-	result = [], //分析结果
-	startDate = new Date(),	//开始时间
-	endDate = false,	//结束时间
+	// pageUrls = [], //招聘列表地址
+	// employUrls = [], //招聘信息地址
+	// employInfos = [], //招聘内容（招聘职位、学历要求，发布日期，截止日期，工资范围）
+	pageNum = 2, //爬取的页数
+	// result = [], //分析结果
+	// startDate = new Date(),	//开始时间
+	// endDate = false,	//结束时间
  	port = 3333; //端口号
 
-for(var i = 1;i <= pageNum;i++){
-	pageUrls.push(indexUrl + '/?page=' + i);
-}
+
 
 var onRequest = function(req,res){
+	var pageUrls = [], //招聘列表地址
+		employUrls = [], //招聘信息地址
+		employInfos = [], //招聘内容（招聘职位、学历要求，发布日期，截止日期，工资范围）
+		result = [], //分析结果
+		startDate = new Date(),	//开始时间
+		endDate = false;	//结束时间
+
+	for(var i = 1;i <= pageNum;i++){
+		pageUrls.push(indexUrl + '/?page=' + i);
+	}
+
 	res.writeHead(200,{'Content-Type': 'text/html;charset=utf-8'});
 	res.write('<hr><h2>列表页数:' + pageNum + '</h2><hr>');
 

@@ -1,3 +1,6 @@
+//结果分析 json对象
+//总平均工资,各个岗位平均工资,招聘职位比重，学历要求比重，工作年限比重,工资范围比重
+exports.DATA_analysis = function(dataArray){
 //岗位
 var pos = {
 	'.NET程序员': {
@@ -169,9 +172,6 @@ var data = {
 	}
 }
 
-//结果分析 json对象
-//总平均工资,各个岗位平均工资,招聘职位比重，学历要求比重，工作年限比重,工资范围比重
-exports.DATA_analysis = function(dataArray){
 	var len = dataArray.length, //招聘信息数量
 		allSalary = 0, //总工资
 		allAveSalary = 0, //总平均工资
@@ -239,27 +239,27 @@ exports.DATA_analysis = function(dataArray){
 	data.allAveSalary = ALL_aveSalary(allSalary,salaryNum);
 
 	//总结各个岗位平均工资
-	POS_aveSalary(eachSalary);
+	POS_aveSalary(pos,eachSalary);
 
 	//各个岗位平均招聘人数
-	POS_avePeoNum();
+	POS_avePeoNum(pos);
 
 	//招聘岗位比例
-	POS_scale();
+	POS_scale(data,pos);
 
 	//学历要求比例
-	DEG_scale(len,college,colleges,unlimited);
+	DEG_scale(data,len,college,colleges,unlimited);
 
 	//工作年限比重
-	TIMLIMIT_scale(len,shorLimit,commonLimit,longLimit,timeUnlimit);
+	TIMLIMIT_scale(data,len,shorLimit,commonLimit,longLimit,timeUnlimit);
 
 	//工资范围比重
-	SALARY_scale(lowScale,medScale,highScale);
+	SALARY_scale(data,lowScale,medScale,highScale);
 
 	return data;
 }
 //各个岗位平均招聘人数
-var POS_avePeoNum = function(){
+var POS_avePeoNum = function(pos){
 	for(var posName in pos){
 		var tmp = pos[posName].num - pos[posName].someNum;
 
@@ -277,7 +277,7 @@ var ALL_aveSalary = function(allSalary,salaryNum){
 }
 
 //总结各个岗位平均工资
-var POS_aveSalary = function(eachSalary){
+var POS_aveSalary = function(pos,eachSalary){
 	for(var posName in eachSalary){
 		if(!pos[posName].salaryNum){
 			pos[posName].aveSalary =0;
@@ -288,7 +288,7 @@ var POS_aveSalary = function(eachSalary){
 }
 
 //招聘岗位比例
-var POS_scale = function(){
+var POS_scale = function(data,pos){
 	var sum = 0;
 	for(var posName in pos){
 		sum += pos[posName].peopleNum;
@@ -300,14 +300,14 @@ var POS_scale = function(){
 }
 
 //学历要求比例
-var DEG_scale = function(len,college,colleges,unlimited){
+var DEG_scale = function(data,len,college,colleges,unlimited){
 	data.degScale['本科'] = Number(parseFloat(college / len).toFixed(3));
 	data.degScale['大专'] = Number(parseFloat(colleges / len).toFixed(3));
 	data.degScale['无学历要求'] = Number(parseFloat(unlimited / len).toFixed(3));
 }
 
 //工作期限范围
-var TIMLIMIT_scale = function(len,shorLimit,commonLimit,longLimit,timeUnlimit){
+var TIMLIMIT_scale = function(data,len,shorLimit,commonLimit,longLimit,timeUnlimit){
 	data.timelimit['2年以下'] = Number(parseFloat(shorLimit / len).toFixed(3));
 	data.timelimit['2年~5年'] = Number(parseFloat(commonLimit / len).toFixed(3));
 	data.timelimit['5年以上'] = Number(parseFloat(longLimit / len).toFixed(3));
@@ -315,7 +315,7 @@ var TIMLIMIT_scale = function(len,shorLimit,commonLimit,longLimit,timeUnlimit){
 }
 
 //工资范围比重
-var SALARY_scale = function(lowScale,medScale,highScale){
+var SALARY_scale = function(data,lowScale,medScale,highScale){
 	len = lowScale + medScale + highScale;
 	data.salaryScale['10k以下'] = Number(parseFloat(lowScale / len).toFixed(3));
 	data.salaryScale['10k~20k'] = Number(parseFloat(medScale / len).toFixed(3));
