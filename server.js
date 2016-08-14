@@ -117,8 +117,8 @@ var onRequest = function(req,res){
 			var catchDataJSON = DataServer.DATA_analysis(employInfos);
 			res.write('<hr><h2>结果分析</h2><hr>');
 			res.write('<ol>')
-			res.write('<li>爬虫开始时间：'+ startDate.toLocaleString() +'</li>');
-			res.write('<li>爬虫结束时间：'+ endDate.toLocaleString() +'</li>');
+			res.write('<li>爬虫开始时间：'+ startDate.toLocaleDateString() + " " + startDate.toLocaleTimeString() +'</li>');
+			 res.write('<li>爬虫结束时间：'+ endDate.toLocaleDateString() + " " + endDate.toLocaleTimeString() + '</li>');
 			res.write('<li>耗时：'+ (endDate - startDate) +'ms' +' --> '+ (Math.round((endDate - startDate)/1000/60*100)/100) +'min </li>');
 			res.write('<li>总平均工资:&nbsp;<span style="color:red">' + catchDataJSON.allAveSalary + '</span>&nbsp;元/月</li>')
 
